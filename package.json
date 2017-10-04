@@ -1,18 +1,17 @@
 {
-  "name": "web-2-e-commerce",
-  "version": "0.1.0",
-  "description": "E-Commerce Endpoint for Web A",
-  "main": "app.js",
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "Simple item manager",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "William Herman",
+  "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^1.12.1"
-  },
   "dependencies": {
-    "express": "^4.15.4",
-    "mongoose": "^4.11.11"
+    "body-parser": "^1.15.2",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.4.0"
   }
 }

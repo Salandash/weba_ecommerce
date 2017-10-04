@@ -1,0 +1,20 @@
+<form class="well" (submit)="additem($event)">
+      <div class="form-group">
+        <input type="text" [(ngModel)]="title" name="title" class="form-control" placeholder="Add item...">    
+      </div>  
+</form>
+
+<div class="item-list">
+    <div *ngFor="let item of items">
+        <div class="col-md-1">
+            <input type="checkbox" [checked]="item.isCart" (click)="updateStatus(item)">
+        </div>
+        <div class="col-md-7">
+            {{item.title}}    
+        </div> 
+        <div class="col-md-4">
+            <input type="button" (click)="deleteitem(item._id)" value="Delete" class="btn btn-danger">    
+        </div>
+        <br><br>
+    </div>
+</div>

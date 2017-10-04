@@ -1,49 +1,29 @@
-'use strict'
+var express = require('express');
+var path = require('path');
+var bodyParser = require('body-parser');
 
-const http = require('http');
-const express = require('express');
-const fs = require('fs');
-mongoose = require('mongoose'),
-Item = require('./api/models/itemListModel'),
-bodyParser = require('body-parser');
+var index = require('./routes/index');
+var items = require('./routes/item');
 
-// mongoose instance connection url connection
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Itemdb');
+var port = 3000;
 
-//Middlewares
+var app = express();
+
+//View Engine
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'client')));
+
+// Body Parser MW
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(bodyParser.urlencoded({extended: false}));
 
+app.use('/', index);
+app.use('/api', items);
 
-const configJson = fs.readFileSync('./config.json', 'utf8', function(err, data)
-{
-    const config = JSON.parse(configJson);
-
-    const app = express();
-    var routes = require('./api/routes/itemListRoutes'); //importing route
-    routes(app); //register the route
-
-    app.use(express.static(config.webserver.folder));
-
-    const httpServer = http.createServer(app);
-
-    httpServer.listen(config.webserver.port, function(err){
-
-        if(err)
-            {
-                console.log(err.message);
-                return;
-            }
-
-    console.log(`WebAdv ECommerce Server listening on port ${config.webserver.port}`);
-
-});
-
-console.log('Reading config file');
+app.listen(port, function(){
+    console.log('Server started on port '+port);
 });
