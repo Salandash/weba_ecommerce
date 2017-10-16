@@ -7,11 +7,14 @@
 <div class="item-list">
     <div *ngFor="let item of items">
         <div class="col-md-1">
-            <input type="checkbox" [checked]="item.isCart" (click)="updateStatus(item)">
+            <input type="checkbox">
         </div>
-        <div class="col-md-7">
-            {{item.title}}    
+        <div class="col-md-4">
+            {{item.Name}}    
         </div> 
+        <div class="col-md-4">
+            {{item.Quantity}}    
+        </div>
         <div class="col-md-4">
             <input type="button" (click)="deleteitem(item._id)" value="Delete" class="btn btn-danger">    
         </div>

@@ -10,7 +10,8 @@ import {item} from '../../../item';
 
 export class itemsComponent { 
     items: item[];
-    title: string;
+    Name: string;
+    Quantity: number;
     
     constructor(private itemservice:itemservice){
         this.itemservice.getitems()
@@ -22,14 +23,15 @@ export class itemsComponent {
     additem(event){
         event.preventDefault();
         var newitem = {
-            title: this.title,
-            isDone: false
+            Name: this.Name,
+            Quantity: this.Quantity
         }
         
         this.itemservice.additem(newitem)
             .subscribe(item => {
                 this.items.push(item);
-                this.title = '';
+                this.Name = '';
+                this.Quantity= 0;
             });
     }
     
@@ -44,18 +46,6 @@ export class itemsComponent {
                     }
                 }
             }
-        });
-    }
-    
-    updateStatus(item){
-        var _item = {
-            _id:item._id,
-            title: item.title,
-            isDone: !item.isDone
-        };
-        
-        this.itemservice.updateStatus(_item).subscribe(data => {
-            item.isDone = !item.isDone;
         });
     }
 }

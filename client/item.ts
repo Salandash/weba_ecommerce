@@ -1,4 +1,5 @@
 export class item{
-    title: string;
-    isCart: boolean;
+    _id: string;
+    Name: string;
+    Quantity: number;
 }
