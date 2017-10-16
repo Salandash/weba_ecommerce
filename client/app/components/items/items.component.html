@@ -4,20 +4,29 @@
       </div>  
 </form>
 
-<div class="item-list">
-    <div *ngFor="let item of items">
-        <div class="col-md-1">
-            <input type="checkbox">
+<div class="container">
+<div class="table-responsive">
+        <table class="table-bordered" style="width:100%">
+        <thead>
+            <tr style="font:bold; background-color: #4CAF50; color:white;">
+            <th style="padding:15px">ID #</th>
+            <th style="padding:15px">Producto</th>
+            <th style="padding:15px">Cantidad</th>
+            <th style="padding:15px">Acciones</th>
+        </tr>
+    </thead>
+    <tbody style="padding:15px">
+            <tr *ngFor="let item of items">
+                    <td style="padding:15px">{{item._id}}</td>
+                    <td style="padding:15px"> {{item.Name}}</td>
+                    <td style="padding:15px">{{item.Quantity}} </td>
+                    <td style="padding:15px">
+                        <input type="button" (click)="buyitem(item._id)" value="Comprar" class="btn btn-info">
+                        <input type="button" (click)="deleteitem(item._id)" value="Eliminar" class="btn btn-danger"> 
+                    </td>
+                </tr>
+    </tbody>
+    </table>
+               
         </div>
-        <div class="col-md-4">
-            {{item.Name}}    
-        </div> 
-        <div class="col-md-4">
-            {{item.Quantity}}    
         </div>
-        <div class="col-md-4">
-            <input type="button" (click)="deleteitem(item._id)" value="Delete" class="btn btn-danger">    
-        </div>
-        <br><br>
-    </div>
-</div>

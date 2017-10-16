@@ -12,12 +12,14 @@ mongojs.connect("mongodb://localhost:27017/items", function(err, db) {
 
 // Get All items
 router.get('/items', function(req, res, next){
-    collection.find( { Quantity: { $gt: 0 } } , function(err, items){
-        if(err){
+    collection.find( { Quantity: { $gt: 0 } }).toArray(function(err, items){
+        if(err) {
             res.send(err);
+            console.log("Error with Item Collection");
         }
         res.json(items);
     });
+       
 });
 
 // Get Single item
