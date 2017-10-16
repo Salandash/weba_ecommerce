@@ -1,11 +1,18 @@
 var express = require('express');
 var router = express.Router();
-var mongojs = require('mongodb');
-var db = mongojs('mongodb://Wjoseph:pitibole03@ds155414.mlab.com:55414/ecommerce', ['items']);
+var mongojs = require('mongodb').MongoClient;
+
+//Connect to the DB
+mongojs.connect("mongodb://localhost:27017/items", function(err, db) {
+    if(!err) {
+      console.log("We are connected");
+      var collection = db.collection('items');
+    }
+  
 
 // Get All items
 router.get('/items', function(req, res, next){
-    db.items.find(function(err, items){
+    collection.find( { Quantity: { $gt: 0 } } , function(err, items){
         if(err){
             res.send(err);
         }
@@ -15,7 +22,7 @@ router.get('/items', function(req, res, next){
 
 // Get Single item
 router.get('/item/:id', function(req, res, next){
-    db.items.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, item){
+    collection.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, item){
         if(err){
             res.send(err);
         }
@@ -26,57 +33,28 @@ router.get('/item/:id', function(req, res, next){
 //Save item
 router.post('/item', function(req, res, next){
     var item = req.body;
-    if(!item.title || !(item.isDone + '')){
+    if(!item.Name || item.Quantity == 0){
         res.status(400);
         res.json({
             "error": "Bad Data"
         });
     } else {
-        db.items.save(item, function(err, item){
-            if(err){
-                res.send(err);
-            }
-            res.json(item);
-        });
+        collection.insert(item);
+        console.log("Item Added!");
     }
 });
 
 // Delete item
 router.delete('/item/:id', function(req, res, next){
-    db.items.remove({_id: mongojs.ObjectId(req.params.id)}, function(err, item){
+    collection.remove({mykey: req.params.id}), {w:1} , function(err, item){
         if(err){
             res.send(err);
         }
+        
         res.json(item);
-    });
+    }
 });
 
-// Update item
-router.put('/item/:id', function(req, res, next){
-    var item = req.body;
-    var upditem = {};
-    
-    if(item.isCart){
-        upditem.isCart = item.isCart;
-    }
-    
-    if(item.title){
-        upditem.title = item.title;
-    }
-    
-    if(!upditem){
-        res.status(400);
-        res.json({
-            "error":"Bad Data"
-        });
-    } else {
-        db.items.update({_id: mongojs.ObjectId(req.params.id)},upditem, {}, function(err, item){
-        if(err){
-            res.send(err);
-        }
-        res.json(item);
-    });
-    }
 });
 
 module.exports = router;
