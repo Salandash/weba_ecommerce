@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var mongojs = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 
 //Connect to the DB
-mongojs.connect("mongodb://localhost:27017/items", function(err, db) {
+mongojs.connect("mongodb://localhost:27017/ecommerce", function(err, db) {
     if(!err) {
       console.log("We are connected");
       var collection = db.collection('items');
@@ -12,19 +13,17 @@ mongojs.connect("mongodb://localhost:27017/items", function(err, db) {
 
 // Get All items
 router.get('/items', function(req, res, next){
-    collection.find( { Quantity: { $gt: 0 } }).toArray(function(err, items){
-        if(err) {
+    collection.find({ Quantity: { $gt: 0 } }).toArray(function(err, items){
+        if(err){
             res.send(err);
-            console.log("Error with Item Collection");
         }
         res.json(items);
     });
-       
 });
 
 // Get Single item
 router.get('/item/:id', function(req, res, next){
-    collection.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, item){
+    collection.findOne({ "_id": new ObjectId(req.params.id)}, function(err, item){
         if(err){
             res.send(err);
         }
@@ -41,7 +40,8 @@ router.post('/item', function(req, res, next){
             "error": "Bad Data"
         });
     } else {
-        collection.insert(item);
+        collection.insert({Name: item.Name, Quantity: parseInt(item.Quantity)});
+        res.json({"result":"SUCCESS!"});
         console.log("Item Added!");
     }
 });
