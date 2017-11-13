@@ -1,3 +1,4 @@
+import { AuthService } from './services/auth.service';
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
@@ -8,6 +9,7 @@ import {itemsComponent} from './components/items/items.component';
 @NgModule({
   imports:      [ BrowserModule, HttpModule, FormsModule ],
   declarations: [AppComponent, itemsComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [AuthService]
 })
 export class AppModule { }
